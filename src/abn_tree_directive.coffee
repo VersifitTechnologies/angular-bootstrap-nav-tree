@@ -115,14 +115,6 @@ module.directive 'abnTree', ['$timeout', ($timeout) ->
 
       scope.tree_rows = []
 
-      #console.log 'tree-data-change!'
-
-      # give each Branch a UID ( to keep AngularJS happy )
-      for_each_branch (b) -> b.uid = ++currentUID if not b.uid
-
-      # set all parents:
-      for_each_branch (b) -> child.parent_uid = b.uid for child in b.children if angular.isArray b.children
-
       #
       # if "children" is just a list of strings...
       # ...change them into objects:
@@ -141,6 +133,12 @@ module.directive 'abnTree', ['$timeout', ($timeout) ->
           children: []
 
         branch.children = ( f child for child in branch.children )
+
+      # give each Branch a UID ( to keep AngularJS happy )
+      for_each_branch (b) -> b.uid = ++currentUID if not b.uid
+
+      # set all parents:
+      for_each_branch (b) -> child.parent_uid = b.uid for child in b.children if angular.isArray b.children
 
       #
       # add_branch_to_list: recursively add one branch
